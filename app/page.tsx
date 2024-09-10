@@ -22,7 +22,7 @@ export default async function Home() {
     <div>
       {/* Hero */}
       <div
-        className="bg-secondary p-10 flex flex-col w-full h-[750px]"
+        className="p-10 flex flex-col w-full h-[750px]"
         style={{ backgroundImage: "url('BG.png')" }}
       >
         <div className="flex flex-row w-full justify-around">
@@ -84,6 +84,50 @@ export default async function Home() {
           <div className="mr-28">
             <Image src={edImage} alt="Male head shot" />
           </div>
+        </div>
+        {/* Footer */}
+        <div
+          className={`flex flex-row justify-around items-center bg-[#E8EFE9] w-full h-[440px] ${ttNormsMed.className}`}
+        >
+          <div className="flex justify-center items-center text-center">
+            <Image src={logo} alt="MANUAL logo" width={40} />
+          </div>
+          <div>
+            <h4 className={`text-sm text-primary mb-4 ${ttNormsMed.className}`}>
+              Product
+            </h4>
+            <ul className="space-y-6 text-primary">
+              <li>Popular</li>
+              <li>Trending</li>
+              <li>Guided</li>
+              <li>Products</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className={`text-sm text-primary mb-4 ${ttNormsMed.className}`}>
+              Company
+            </h4>
+            <ul className="space-y-6 text-primary">
+              <li>Press</li>
+              <li>Mission</li>
+              <li>Strategy</li>
+              <li>About</li>
+            </ul>
+          </div>
+          <div>
+            <h4 className={`text-sm text-primary mb-4 ${ttNormsMed.className}`}>
+              Info
+            </h4>
+            <ul className={`space-y-6 text-primary`}>
+              <li>Support</li>
+              <li>Customer Service</li>
+              <li>Get Started</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="flex items-center text-center justify-center text-sm h-20 bg-[#E8EFE9]">
+          © 2021 Manual. All rights reserved.
         </div>
       </div>
     </div>
