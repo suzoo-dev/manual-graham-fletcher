@@ -23,7 +23,12 @@ export default async function Home() {
       {/* Hero */}
       <div
         className="p-10 flex flex-col w-full h-[750px]"
-        style={{ backgroundImage: "url('BG.png')" }}
+        style={{
+          backgroundImage: "url('BG.png')",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
       >
         <div className="flex flex-row w-full justify-around">
           <div className="flex flex-col w-[468px]">
