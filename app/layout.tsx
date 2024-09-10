@@ -2,15 +2,16 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const ttNorms = localFont({
+  src: "./fonts/TTNorms/TT Norms Pro Regular.otf",
+  variable: "--font-norms-sans",
+  weight: "100",
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+export const ttNormsMed = localFont({
+  src: "./fonts/TTNorms/TT Norms Pro Medium.otf",
+  variable: "--font-norms-med-sans",
+  weight: "500",
 });
 
 export const metadata: Metadata = {
@@ -25,11 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <body className={`${ttNorms.variable} antialiased`}>{children}</body>
     </html>
   );
 }
