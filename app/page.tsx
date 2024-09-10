@@ -60,7 +60,7 @@ export default async function Home() {
           <div className="ml-28">
             <Image src={hairImage} alt="Male head showing hair" />
           </div>
-          <div className="w-[372px] mr-28">
+          <div className="flex flex-col justify-center w-[372px] mr-28">
             <h4 className={`text-xs leading-10 ${ttNormsMed.className}`}>
               HAIR LOSS
             </h4>
@@ -70,8 +70,9 @@ export default async function Home() {
             {paragraphText()}
           </div>
         </div>
+        {/* ED */}
         <div className="flex flex-row justify-around mb-20">
-          <div className="w-[372px] ml-28">
+          <div className="flex flex-col justify-center w-[372px] ml-28">
             <h4 className={`text-xs leading-10 ${ttNormsMed.className}`}>
               ERECTILE DYSFUNCTION
             </h4>
