@@ -26,7 +26,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${ttNorms.variable} antialiased`}>{children}</body>
+      <body
+        className={`${ttNorms.variable} ${ttNormsMed.variable} antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
