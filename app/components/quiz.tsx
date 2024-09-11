@@ -80,6 +80,7 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
       timeoutRef.current = setTimeout(() => {
         if (currentQuestion === questions.length - 1 || rejection) {
           setShowResults(true);
+          setDirection(-1);
         } else {
           setDirection(1);
           setCurrentQuestion((prev) => prev + 1);
@@ -123,60 +124,72 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
   );
 
   const renderResults = () => (
-    <div className="flex-grow flex flex-col justify-between text-center p-8">
-      <h2 className="text-2xl font-medium font-med mb-8">Your Result</h2>
-      {isRejection ? (
-        <p className="text-lg font-medium font-med">
-          Unfortunately, we are unable to prescribe this medication for you.
-          This is because finasteride can alter the PSA levels, which may be
-          used to monitor for cancer. You should discuss this further with your
-          GP or specialist if you would still like this medication.
-        </p>
-      ) : (
-        <p className="text-lg font-medium font-med">
-          Great news! We have the perfect treatment for your hair loss. Proceed
-          to <a href="www.manual.co">www.manual.co</a>, and prepare to say hello
-          to your new hair!
-        </p>
-      )}
-      {backButton()}
+    <div className="flex-grow flex flex-col h-full p-8">
+      <div className="mt-10">
+        <h2 className="text-2xl font-medium font-med mb-8 text-center">
+          Your Result
+        </h2>
+      </div>
+      <div className="flex-grow flex items-center justify-center">
+        {isRejection ? (
+          <p className="text-lg font-medium font-med">
+            Unfortunately, we are unable to prescribe this medication for you.
+            This is because finasteride can alter the PSA levels, which may be
+            used to monitor for cancer. You should discuss this further with
+            your GP or specialist if you would still like this medication.
+          </p>
+        ) : (
+          <p className="text-lg font-medium font-med">
+            Great news! We have the perfect treatment for your hair loss.
+            Proceed to <a href="www.manual.co">www.manual.co</a>, and prepare to
+            say hello to your new hair!
+          </p>
+        )}
+      </div>
+      <div className="mb-10">{backButton()}</div>
     </div>
   );
 
   const renderQuiz = () => (
-    <div className="flex-grow flex flex-col justify-around p-8">
-      <AnimatePresence mode="wait">
-        <motion.h2
-          key={`question-${currentQuestion}`}
-          initial={{ x: 300 * direction, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -300 * direction, opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-2xl font-medium font-med text-center"
-        >
-          {questions[currentQuestion].question}
-        </motion.h2>
-      </AnimatePresence>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`options-${currentQuestion}`}
-          initial={{ x: 300 * direction, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -300 * direction, opacity: 0 }}
-          transition={{ duration: 0.5 }}
-          className="grid grid-cols-2 gap-4 mb-8"
-        >
-          {questions[currentQuestion].options.map((option, idx) => (
-            <OptionButton
-              key={`${currentQuestion}-${idx}`}
-              option={option}
-              isSelected={answers[currentQuestion] === option.value.toString()}
-              onClick={() => handleAnswer(option.value, option.isRejection)}
-            />
-          ))}
-        </motion.div>
-      </AnimatePresence>
-      {backButton()}
+    <div className="flex-grow flex flex-col h-full p-8">
+      <div className="mt-10">
+        <AnimatePresence mode="wait">
+          <motion.h2
+            key={`question-${currentQuestion}`}
+            initial={{ x: 300 * direction, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -300 * direction, opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-2xl font-medium font-med text-center mb-8"
+          >
+            {questions[currentQuestion].question}
+          </motion.h2>
+        </AnimatePresence>
+      </div>
+      <div className="flex-grow flex items-center">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`options-${currentQuestion}`}
+            initial={{ x: 300 * direction, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -300 * direction, opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="w-full grid grid-cols-2 gap-4"
+          >
+            {questions[currentQuestion].options.map((option, idx) => (
+              <OptionButton
+                key={`${currentQuestion}-${idx}`}
+                option={option}
+                isSelected={
+                  answers[currentQuestion] === option.value.toString()
+                }
+                onClick={() => handleAnswer(option.value, option.isRejection)}
+              />
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      <div className="mb-10">{backButton()}</div>
     </div>
   );
 
