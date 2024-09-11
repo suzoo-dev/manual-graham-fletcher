@@ -40,7 +40,7 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
       } else {
         nextQuestion();
       }
-    }, 1000);
+    }, 500);
   };
 
   const nextQuestion = () => {
@@ -71,6 +71,15 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
     }
   };
 
+  const backButton = () => (
+    <button
+      className="mt-4 text-xs leading-8 text-white bg-[#7E0707] px-8 py-4 tracking-widest font-medium"
+      onClick={handleBack}
+    >
+      GO BACK
+    </button>
+  );
+
   const renderResults = () => (
     <div className="flex-grow flex flex-col justify-between p-8">
       <h2 className="text-2xl font-medium mb-8">Your Results</h2>
@@ -80,12 +89,7 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
           <p>Your answer: {answers[index]}</p>
         </div>
       ))}
-      <button
-        className="mt-4 text-xs leading-8 text-white bg-[#7E0707] px-8 py-4 tracking-widest font-medium"
-        onClick={handleBack}
-      >
-        GO BACK
-      </button>
+      {backButton()}
     </div>
   );
 
@@ -109,12 +113,7 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
           </button>
         ))}
       </div>
-      <button
-        className="mt-4 text-xs leading-8 text-white bg-[#7E0707] px-8 py-4 tracking-widest font-medium"
-        onClick={handleBack}
-      >
-        GO BACK
-      </button>
+      {backButton()}
     </div>
   );
 
