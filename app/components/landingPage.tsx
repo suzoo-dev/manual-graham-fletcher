@@ -31,7 +31,7 @@ const LandingPage = ({
       >
         <div className="flex flex-row w-full justify-around">
           <div className="flex flex-col w-[468px]">
-            <div className="mb-40">
+            <div className="mb-10 md:mb-40">
               <Image src={logo} alt="MANUAL logo" />
             </div>
             <h1 className={`mb-8 text-8xl text-primary font-medium font-med`}>
@@ -58,10 +58,10 @@ const LandingPage = ({
           What we can help with
         </h1>
         <div className="flex flex-row justify-around mb-20">
-          <div className="ml-28">
+          <div className="md:ml-28 hidden md:block">
             <Image src={hairImage} alt="Male head showing hair" />
           </div>
-          <div className="flex flex-col justify-center w-[372px] mr-28">
+          <div className="flex flex-col justify-center w-[372px] md:mr-28">
             <h4 className={`text-xs leading-10 font-medium font-med`}>
               HAIR LOSS
             </h4>
@@ -73,7 +73,7 @@ const LandingPage = ({
         </div>
         {/* ED */}
         <div className="flex flex-row justify-around mb-20">
-          <div className="flex flex-col justify-center w-[372px] ml-28">
+          <div className="flex flex-col justify-center w-[372px] md:ml-28">
             <h4 className={`text-xs leading-10 font-medium font-med`}>
               ERECTILE DYSFUNCTION
             </h4>
@@ -82,7 +82,7 @@ const LandingPage = ({
             </h2>
             {paragraphText()}
           </div>
-          <div className="mr-28">
+          <div className="md:mr-28 hidden md:block">
             <Image src={edImage} alt="Male head shot" />
           </div>
         </div>
