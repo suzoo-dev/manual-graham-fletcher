@@ -24,13 +24,15 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Layout
 
-- [ ] Landing Page
-- [ ] Hair/ED Hero component
-- [ ] Footer
-- [ ] Form
-- [ ] Results
+- [x] Landing Page
+- [x] Hair/ED Hero component
+- [x] Footer
+- [x] Form
+- [x] Results
 
 ### Form
 
-- [ ] Build form state
+- [x] Build form state
 - [ ] Validation
+
+##

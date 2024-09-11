@@ -26,16 +26,18 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
   const [answers, setAnswers] = useState<string[]>(
     new Array(questions.length).fill("")
   );
+  const [isRejection, setIsRejection] = useState<boolean>(false);
 
-  const handleAnswer = (value: string) => {
+  const handleAnswer = (value: string, rejection: boolean) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = value.toString();
     setAnswers(newAnswers);
+    setIsRejection(rejection);
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
     timeoutRef.current = setTimeout(() => {
-      if (currentQuestion === questions.length - 1) {
+      if (currentQuestion === questions.length - 1 || rejection) {
         setShowResults(true);
       } else {
         nextQuestion();
@@ -81,14 +83,22 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
   );
 
   const renderResults = () => (
-    <div className="flex-grow flex flex-col justify-between p-8">
-      <h2 className="text-2xl font-medium mb-8">Your Results</h2>
-      {questions.map((question, index) => (
-        <div key={index} className="mb-4">
-          <p className="font-bold">{question.question}</p>
-          <p>Your answer: {answers[index]}</p>
-        </div>
-      ))}
+    <div className="flex-grow flex flex-col justify-between text-center p-8">
+      <h2 className="text-2xl font-medium font-med mb-8">Your Result</h2>
+      {isRejection ? (
+        <p className="text-lg font-medium font-med">
+          Unfortunately, we are unable to prescribe this medication for you.
+          This is because finasteride can alter the PSA levels, which may be
+          used to monitor for cancer. You should discuss this further with your
+          GP or specialist if you would still like this medication.
+        </p>
+      ) : (
+        <p className="text-lg font-medium font-med">
+          Great news! We have the perfect treatment for your hair loss. Proceed
+          to <a href="www.manual.co">www.manual.co</a>, and prepare to say hello
+          to your new hair!
+        </p>
+      )}
       {backButton()}
     </div>
   );
@@ -102,7 +112,7 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
         {questions[currentQuestion].options.map((option, idx) => (
           <button
             key={idx}
-            onClick={() => handleAnswer(option.value)}
+            onClick={() => handleAnswer(option.value, option.isRejection)}
             className={`p-4 border-2 ${
               answers[currentQuestion] === option.value.toString()
                 ? "border-[#7E0707]"
