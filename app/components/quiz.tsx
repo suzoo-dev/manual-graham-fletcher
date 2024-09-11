@@ -1,6 +1,8 @@
 "use client";
-import { useRef, useState } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
 import LandingPage from "@/app/components/landingPage";
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 enum QuestionType {
   ChoiceType,
@@ -18,6 +20,40 @@ type Question = {
   options: Option[];
 };
 
+const OptionButton = React.memo(
+  ({
+    option,
+    isSelected,
+    onClick,
+  }: {
+    option: Option;
+    isSelected: boolean;
+    onClick: () => void;
+  }) => {
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      if (contentRef.current) {
+        contentRef.current.innerHTML = option.display;
+      }
+    }, [option.display]);
+
+    return (
+      <motion.button
+        layout
+        onClick={onClick}
+        className={`p-4 border-2 ${
+          isSelected ? "border-[#7E0707]" : "border-gray-300"
+        } rounded-lg transition-all duration-300 ease-in-out`}
+      >
+        <div ref={contentRef} />
+      </motion.button>
+    );
+  }
+);
+
+OptionButton.displayName = "OptionButton";
+
 const Quiz = ({ questions }: { questions: Question[] }) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [showQuiz, setShowQuiz] = useState<boolean>(false);
@@ -27,32 +63,35 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
     new Array(questions.length).fill("")
   );
   const [isRejection, setIsRejection] = useState<boolean>(false);
+  const [direction, setDirection] = useState(1);
 
-  const handleAnswer = (value: string, rejection: boolean) => {
-    const newAnswers = [...answers];
-    newAnswers[currentQuestion] = value.toString();
-    setAnswers(newAnswers);
-    setIsRejection(rejection);
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    timeoutRef.current = setTimeout(() => {
-      if (currentQuestion === questions.length - 1 || rejection) {
-        setShowResults(true);
-      } else {
-        nextQuestion();
+  const handleAnswer = useCallback(
+    (value: string, rejection: boolean) => {
+      setAnswers((prev) => {
+        const newAnswers = [...prev];
+        newAnswers[currentQuestion] = value.toString();
+        return newAnswers;
+      });
+      setIsRejection(rejection);
+
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
       }
-    }, 500);
-  };
-
-  const nextQuestion = () => {
-    if (currentQuestion < questions.length - 1) {
-      setCurrentQuestion(currentQuestion + 1);
-    }
-  };
+      timeoutRef.current = setTimeout(() => {
+        if (currentQuestion === questions.length - 1 || rejection) {
+          setShowResults(true);
+        } else {
+          setDirection(1);
+          setCurrentQuestion((prev) => prev + 1);
+        }
+      }, 250);
+    },
+    [currentQuestion, questions.length]
+  );
 
   const previousQuestion = () => {
     if (currentQuestion > 0) {
+      setDirection(-1);
       setCurrentQuestion(currentQuestion - 1);
     }
   };
@@ -69,6 +108,7 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
     } else {
       setShowQuiz(false);
       setCurrentQuestion(0);
+      setDirection(1);
       setAnswers(new Array(questions.length).fill(""));
     }
   };
@@ -104,25 +144,38 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
   );
 
   const renderQuiz = () => (
-    <div className="flex-grow flex flex-col justify-between p-8">
-      <h2 className="text-2xl font-medium mb-8 font-med">
-        {questions[currentQuestion].question}
-      </h2>
-      <div className="grid grid-cols-2 gap-4 mb-8">
-        {questions[currentQuestion].options.map((option, idx) => (
-          <button
-            key={idx}
-            onClick={() => handleAnswer(option.value, option.isRejection)}
-            className={`p-4 border-2 ${
-              answers[currentQuestion] === option.value.toString()
-                ? "border-[#7E0707]"
-                : "border-gray-300"
-            }`}
-          >
-            <div dangerouslySetInnerHTML={{ __html: option.display }} />
-          </button>
-        ))}
-      </div>
+    <div className="flex-grow flex flex-col justify-around p-8">
+      <AnimatePresence mode="wait">
+        <motion.h2
+          key={`question-${currentQuestion}`}
+          initial={{ x: 300 * direction, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -300 * direction, opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-2xl font-medium font-med text-center"
+        >
+          {questions[currentQuestion].question}
+        </motion.h2>
+      </AnimatePresence>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={`options-${currentQuestion}`}
+          initial={{ x: 300 * direction, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -300 * direction, opacity: 0 }}
+          transition={{ duration: 0.5 }}
+          className="grid grid-cols-2 gap-4 mb-8"
+        >
+          {questions[currentQuestion].options.map((option, idx) => (
+            <OptionButton
+              key={`${currentQuestion}-${idx}`}
+              option={option}
+              isSelected={answers[currentQuestion] === option.value.toString()}
+              onClick={() => handleAnswer(option.value, option.isRejection)}
+            />
+          ))}
+        </motion.div>
+      </AnimatePresence>
       {backButton()}
     </div>
   );
