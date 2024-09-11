@@ -107,7 +107,7 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
               answers[currentQuestion] === option.value.toString()
                 ? "border-[#7E0707]"
                 : "border-gray-300"
-            } rounded-lg`}
+            }`}
           >
             <div dangerouslySetInnerHTML={{ __html: option.display }} />
           </button>
